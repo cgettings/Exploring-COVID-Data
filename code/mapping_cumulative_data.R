@@ -110,7 +110,7 @@ data_by_modzcta_map <-
     # street lines, to better distinguish neighborhood locations
     
     addTiles(
-        urlTemplate = "//tile.stamen.com/toner-lines/{z}/{x}/{y}{r}.png",
+        urlTemplate = "//stamen-tiles.a.ssl.fastly.net/toner-lines/{z}/{x}/{y}{r}.png",
         attribution =
             glue(
                 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, ',
