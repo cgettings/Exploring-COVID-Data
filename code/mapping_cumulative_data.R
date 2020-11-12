@@ -91,6 +91,63 @@ updated_date_js <-
     read_file(here("code/js/updated_date.js")) %>% 
     str_replace("####", strftime(updated_date, format = "%x"))
 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+# plugins & dependencies
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+add_extra <- 
+    function(map, extra) {
+        map$dependencies <- c(map$dependencies, list(extra))
+        map
+    }
+
+# my own FA library
+
+fa_dir <- path(path_home(), "node_modules/@fortawesome/fontawesome-free")
+
+fa_plugin <-
+    htmlDependency(
+        name = "fontawesome", 
+        version = jsonlite::fromJSON(path(fa_dir, "package.json"))$version,
+        src = c(file = fa_dir),
+        stylesheet = "css/all.css",
+        all_files = TRUE
+    )
+
+# map style
+
+map_style <-
+    htmlDependency(
+        name = "map_style", 
+        version = 0,
+        src = c(file = here("code/css")),
+        stylesheet = "map_style.css",
+        all_files = FALSE
+    )
+
+# head meta
+
+meta <- 
+    list(
+        viewport="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        
+    )
+
+head_meta <-
+    htmlDependency(
+        name = "head_meta", 
+        version = 0,
+        src = here(),
+        meta = meta,
+        all_files = FALSE
+    )
+
+
+#-----------------------------------------------------------------------------------------#
+# Constructing map
+#-----------------------------------------------------------------------------------------#
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 # Defining color palette
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
@@ -101,10 +158,6 @@ pal <-
         domain = NULL,
         na.color = "#666666"
     )
-
-#-----------------------------------------------------------------------------------------#
-# Constructing map
-#-----------------------------------------------------------------------------------------#
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 # Tiles and lines
@@ -305,6 +358,14 @@ data_by_modzcta_map <-
     hideGroup(c("Street Lines", "Map Labels")) %>% 
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+    # Adding extras
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+    
+    add_extra(fa_plugin) %>% 
+    add_extra(map_style) %>% 
+    add_extra(head_meta) %>% 
+    
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
     # Adding javascript
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
     
@@ -343,7 +404,7 @@ data_by_modzcta_map
 saveWidget(
     widget = data_by_modzcta_map,
     file = here("docs/data_by_modzcta_map.html"),
-    selfcontained = TRUE,
+    selfcontained = FALSE,
     title = "Cumulative COVID-19 Data by ZIP Code"
 )
 
