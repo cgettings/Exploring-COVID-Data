@@ -15,3 +15,9 @@ Initial `{leaflet}` code: [`code/mapping_cumulative_data.R`](code/mapping_cumula
 
 Adding tooltips and color scales for ZIP codes: [`code/js/add_tooltips_and_legends.js`](code/js/add_tooltips_and_legends.js)  
 Adding a label for data updated date: [`code/js/updated_date.js`](code/js/updated_date.js)  
+
+**TODO:**
+
+- Maintain selected ZIP code when switching base layers
+- Add persistent stats label on click
+- Add graph overlay on click
