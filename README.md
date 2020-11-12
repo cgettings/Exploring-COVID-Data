@@ -13,5 +13,5 @@ Initial `{leaflet}` code: [`code/mapping_cumulative_data.R`](code/mapping_cumula
 
 ### JavaScript
 
-Adding tooltips for ZIP codes: [`code/js/add_tooltips_and_legends.js`](code/js/add_tooltips_and_legends.js)  
+Adding tooltips and color scales for ZIP codes: [`code/js/add_tooltips_and_legends.js`](code/js/add_tooltips_and_legends.js)  
 Adding a label for data updated date: [`code/js/updated_date.js`](code/js/updated_date.js)  
