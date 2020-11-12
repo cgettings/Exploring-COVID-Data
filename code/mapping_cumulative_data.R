@@ -1,7 +1,7 @@
 ###########################################################################################-
 ###########################################################################################-
 ##
-## Leaflet map for Citi bike trips in April 2019 ---
+## Leaflet map for COVID-19 data in NYC ---
 ##
 ###########################################################################################-
 ###########################################################################################-
@@ -38,15 +38,16 @@ library(sf)
 # From GitHub
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 
-base_url <- "https://raw.githubusercontent.com/nychealth/coronavirus-data/master/"
+base_url <- "https://raw.githubusercontent.com/nychealth/coronavirus-data/master/totals/"
 
-data_by_modzcta <- 
-    read_csv(str_c(base_url, "data-by-modzcta.csv"))
+data_by_modzcta <- read_csv(str_c(base_url, "data-by-modzcta.csv"))
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 # Map layers
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+# source: https://github.com/nychealth/coronavirus-data/tree/master/Geography-resources
 
 modzcta <- 
     st_read(here("data/gis/zcta/MODZCTA_2010.shp")) %>% 
@@ -79,6 +80,16 @@ data_by_modzcta_sf <-
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 
 add_tooltips_and_legends <- read_file(here("code/js/add_tooltips_and_legends.js"))
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+# Reading in javascript for date label overlay
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+
+updated_date <- today()
+
+updated_date_js <- 
+    read_file(here("code/js/updated_date.js")) %>% 
+    str_replace("####", strftime(updated_date, format = "%x"))
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 # Defining color palette
@@ -290,13 +301,15 @@ data_by_modzcta_map <-
     hideGroup(c("Street Lines", "Map Labels")) %>% 
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-    # Adding javascript for displaying tooltips and legends
+    # Adding javascript
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+    
+    # displaying tooltips and legends
     
     onRender(
         str_c(
             "function(el, x, data) {\n",
-            JS(add_tooltips_and_legends),
+            add_tooltips_and_legends,
             "}"
         ),
         data = 
@@ -304,6 +317,17 @@ data_by_modzcta_map <-
             as_tibble() %>%
             select(-c(geometry, label, BOROUGH_GROUP)) %>%
             drop_na()
+    ) %>% 
+    
+    # displaying updated at date
+    
+    onRender(
+        str_c(
+            "function(el, x) {\n",
+            "console.log('onRender');",
+            updated_date_js,
+            "}"
+        )
     )
 
 data_by_modzcta_map
