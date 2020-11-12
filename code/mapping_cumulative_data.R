@@ -114,6 +114,10 @@ data_by_modzcta_map <-
     
     leaflet(data = data_by_modzcta_sf) %>% 
     
+    # dynamic URL hash
+    
+    addHash() %>% 
+    
     # base layer
     
     addProviderTiles(provider = providers$CartoDB.DarkMatterNoLabels) %>%
