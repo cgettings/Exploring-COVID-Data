@@ -42,6 +42,7 @@ base_url <- "https://raw.githubusercontent.com/nychealth/coronavirus-data/master
 
 data_by_modzcta <- read_csv(str_c(base_url, "data-by-modzcta.csv"))
 
+updated_date <- today()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 # Map layers
@@ -84,8 +85,6 @@ add_tooltips_and_legends <- read_file(here("code/js/add_tooltips_and_legends.js"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 # Reading in javascript for date label overlay
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-
-updated_date <- today()
 
 updated_date_js <- 
     read_file(here("code/js/updated_date.js")) %>% 
@@ -217,7 +216,7 @@ data_by_modzcta_map <-
         highlightOptions = 
             highlightOptions(
                 stroke = TRUE,
-                color = "cyan",
+                color = "white",
                 weight = 2.5,
                 bringToFront = TRUE,
                 sendToBack = TRUE,
@@ -242,7 +241,7 @@ data_by_modzcta_map <-
         highlightOptions = 
             highlightOptions(
                 stroke = TRUE,
-                color = "cyan",
+                color = "white",
                 weight = 2.5,
                 bringToFront = TRUE,
                 sendToBack = TRUE,
@@ -267,7 +266,7 @@ data_by_modzcta_map <-
         highlightOptions = 
             highlightOptions(
                 stroke = TRUE,
-                color = "cyan",
+                color = "white",
                 weight = 2.5,
                 bringToFront = TRUE,
                 sendToBack = TRUE,
@@ -389,7 +388,6 @@ data_by_modzcta_map <-
     onRender(
         str_c(
             "function(el, x) {\n",
-            "console.log('onRender');",
             updated_date_js,
             "}"
         )

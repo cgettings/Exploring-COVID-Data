@@ -14,7 +14,6 @@ const map = this;
 
 var date_label = L.control({position: 'topright'});
 
-console.log(date_label);
 
 date_label.onAdd = function (map) {
     
