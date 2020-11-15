@@ -18,6 +18,6 @@ Adding a label for data updated date: [`code/js/updated_date.js`](code/js/update
 
 **TODO:**
 
-- Add persistent stats label on click
+- ~Add persistent stats label on click~
 - Maintain selected ZIP code when switching base layers
 - Add graph overlay on click
