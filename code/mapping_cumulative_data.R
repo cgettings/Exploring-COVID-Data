@@ -77,17 +77,11 @@ data_by_modzcta_sf <-
 #-----------------------------------------------------------------------------------------#
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-# Reading in javascript for tooltips and legends
+# Reading in javascript for tooltips, legends, and date label overlay
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 
-add_tooltips_and_legends <- read_file(here("code/js/add_tooltips_and_legends.js"))
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-# Reading in javascript for date label overlay
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-
-updated_date_js <- 
-    read_file(here("code/js/updated_date.js")) %>% 
+add_tooltips_and_legends <- 
+    read_file(here("code/js/add_tooltips_and_legends.js")) %>% 
     str_replace("####", strftime(updated_date, format = "%x"))
 
 
@@ -368,7 +362,7 @@ data_by_modzcta_map <-
     # Adding javascript
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
     
-    # displaying tooltips and legends
+    # displaying tooltips, legends, data date
     
     onRender(
         str_c(
@@ -381,16 +375,6 @@ data_by_modzcta_map <-
             as_tibble() %>%
             select(-c(geometry, label, BOROUGH_GROUP)) %>%
             drop_na()
-    ) %>% 
-    
-    # displaying updated at date
-    
-    onRender(
-        str_c(
-            "function(el, x) {\n",
-            updated_date_js,
-            "}"
-        )
     )
 
 data_by_modzcta_map
