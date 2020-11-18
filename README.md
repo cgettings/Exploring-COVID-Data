@@ -18,5 +18,6 @@ Adding tooltips and color scales for ZIP codes; adding a label for date the data
 **TODO:**
 
 - ~Add persistent stats label on click~
+- Show changes over time with slider control
 - Maintain selected ZIP code when switching base layers
 - Add graph overlay on click
